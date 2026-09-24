@@ -10,3 +10,13 @@ document.getElementById('back-button').addEventListener('click',()=>{setStage(1)
 document.getElementById('complete-button').addEventListener('click',()=>{setStage(3);form.reset();document.getElementById('confirm-values').replaceChildren();document.getElementById('complete-title').focus()});
 document.getElementById('reset-button').addEventListener('click',()=>{form.reset();['name','phone','agree'].forEach(f=>error(f,''));setStage(1);fields.name.focus()});
 setStage(1);
+
+// Show the mobile consultation link only after the reassurance sections.
+const mobileCta=document.querySelector('.mobile-cta');
+const invitation=document.getElementById('invitation');
+const contact=document.getElementById('contact');
+let ctaTicking=false;
+function updateCta(){const ready=invitation.getBoundingClientRect().top<window.innerHeight*0.55;const formVisible=contact.getBoundingClientRect().top<window.innerHeight*0.85&&contact.getBoundingClientRect().bottom>0;mobileCta.hidden=!ready||formVisible;ctaTicking=false;}
+window.addEventListener('scroll',()=>{if(!ctaTicking){requestAnimationFrame(updateCta);ctaTicking=true;}},{passive:true});
+window.addEventListener('resize',updateCta);
+updateCta();
